@@ -15,7 +15,6 @@ class Game:
         [(0, 0), (1, 1), (2, 2)],
         [(0, 2), (1, 1), (2, 0)]
     ]
-
     def __init__(self, field=None, size=None):
         if field is None:
             self.field = self.create_field(size)
@@ -24,6 +23,7 @@ class Game:
 
         self.step_number: int = self.calculate_step_number()
         self.who_win = None
+        self.winner = None
 
     def create_field(self, size: int) -> List[List[str]]:
         field = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
@@ -46,7 +46,7 @@ class Game:
                 if 1 <= a <= 9:
                     return a
                 else:
-                    print("Номер клітини має бути від 1 до 9")
+                    print("Номер клітинки має бути від 1 до 9")
             except ValueError:
                 print("Помилка")
 
@@ -58,7 +58,7 @@ class Game:
             self.field[row][col] = symbol
             self.step_number += 1
         else:
-            print("Ця клітина вже зайнята")
+            print("Ця клітинка вже зайнята")
 
     def get_coordinates(self, a: int) -> Tuple[int, int]:
         if 1 <= a <= 9:
@@ -66,7 +66,7 @@ class Game:
             col = (a - 1) % 3
             return row, col
         else:
-            raise ValueError("Номер клітини має бути від 1 до 9")
+            raise ValueError("Номер клітинки має бути від 1 до 9")
 
     def is_valid_move(self, row: int, col: int) -> bool:
         if self.field[row][col] not in [X_CELL, O_CELL]:
@@ -80,7 +80,6 @@ class Game:
             if all(cell == X_CELL for cell in cells) or all(cell == O_CELL for cell in cells):
                 return f'Переможець {cells[0]}'
         return None
-
 
 def print_board(board):
     for row in board:
@@ -101,5 +100,6 @@ if __name__ == '__main__':
         print('Нічия')
     else:
         print(game.winner)
+
 
 
