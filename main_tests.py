@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch
+
 from main import Game, X_CELL, O_CELL
 
 
