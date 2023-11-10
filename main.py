@@ -3,7 +3,6 @@ from typing import List, Tuple
 X_CELL = "X"
 O_CELL = "O"
 
-
 class Game:
     WINNING_COMBINATIONS = [
         [(0, 0), (0, 1), (0, 2)],
@@ -15,6 +14,7 @@ class Game:
         [(0, 0), (1, 1), (2, 2)],
         [(0, 2), (1, 1), (2, 0)]
     ]
+
     def __init__(self, field=None, size=None):
         if field is None:
             self.field = self.create_field(size)
@@ -24,7 +24,6 @@ class Game:
         self.step_number: int = self.calculate_step_number()
         self.who_win = None
         self.winner = None
-
     def create_field(self, size: int) -> List[List[str]]:
         field = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
         return field
@@ -42,7 +41,8 @@ class Game:
     def get_step(self) -> int:
         while True:
             try:
-                a = int(input("Номер: "))
+                print(f"Хід {X_CELL if self.step_number % 2 == 0 else O_CELL}:")
+                a = int(input())
                 if 1 <= a <= 9:
                     return a
                 else:
@@ -81,25 +81,42 @@ class Game:
                 return f'Переможець {cells[0]}'
         return None
 
+
 def print_board(board):
     for row in board:
         print(" | ".join(row))
         print("-" * 9)
 
 if __name__ == '__main__':
-    game = Game()
-    while game.has_steps():
+    play_again = True
+    while play_again:
+        game = Game()
+        while game.has_steps():
+            print_board(game.field)
+            game.set_step(game.get_step(), game.step_number % 2 == 0)
+            result = game.check_winning_conditions()
+            if result:
+                game.winner = result
+                break
         print_board(game.field)
-        game.set_step(game.get_step(), game.step_number % 2 == 0)
-        result = game.check_winning_conditions()
-        if result:
-            game.winner = result
-            break
-    print_board(game.field)
-    if game.winner is None:
-        print('Нічия')
-    else:
-        print(game.winner)
+        if game.winner is None:
+            print('Нічия')
+        else:
+            print(game.winner)
+
+        while True:
+            try:
+                play_again_ = input("Грати ще раз (так/ні)? ").lower()
+                if play_again_ == 'так':
+                    break
+                elif play_again_ == 'ні':
+                    print("Дякую за гру!")
+                    exit()
+                else:
+                    print("Введіть 'так' або 'ні'.")
+            except ValueError:
+                print("Помилка")
+
 
 
 
