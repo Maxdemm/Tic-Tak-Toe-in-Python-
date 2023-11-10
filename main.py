@@ -24,6 +24,7 @@ class Game:
         self.step_number: int = self.calculate_step_number()
         self.who_win = None
         self.winner = None
+
     def create_field(self, size: int) -> List[List[str]]:
         field = [['1', '2', '3'], ['4', '5', '6'], ['7', '8', '9']]
         return field
@@ -74,11 +75,17 @@ class Game:
         else:
             return False
 
+
+    score = {'X':0, 'O':0}
     def check_winning_conditions(self) -> str:
         for combination in self.WINNING_COMBINATIONS:
             cells = [self.field[row][col] for row, col in combination]
-            if all(cell == X_CELL for cell in cells) or all(cell == O_CELL for cell in cells):
-                return f'Переможець {cells[0]}'
+            if all(cell == X_CELL for cell in cells):
+                self.score['X'] += 1
+                return f'Переможець X'
+            elif all(cell == O_CELL for cell in cells):
+                self.score['O'] += 1
+                return f'Переможець O'
         return None
 
 
@@ -103,7 +110,9 @@ if __name__ == '__main__':
             print('Нічия')
         else:
             print(game.winner)
-
+            
+        print(f"Рахунок: X - {game.score['X']}, O - {game.score['O']}")
+        
         while True:
             try:
                 play_again_ = input("Грати ще раз (так/ні)? ").lower()
